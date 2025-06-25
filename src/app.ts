@@ -7,6 +7,7 @@ import ProdutoService from "./services/ProdutoService";
 import VendaService from "./services/VendaService";
 import ItemVendidoService from "./services/ItemVendidoService";
 import PagamentoService from "./services/PagamentoService";
+import UsuarioService from "./services/UsuarioService";
 
 
 
@@ -22,6 +23,7 @@ const prod= new ProdutoService()
 const ven = new VendaService()
 const itn = new ItemVendidoService()
 const pag = new PagamentoService()
+const us = new UsuarioService()
 
 app.get("/api/v1/cliente/listar",(req,res)=>{
     cli.listarClientes(req,res);
@@ -64,6 +66,18 @@ app.post("/api/v1/produto/cadastro",(req,res)=>{
     prod.cadastroProduto(req,res);
 })
 
+app.get("/api/v1/produto/listarmaisvendidos",(req,res)=>{
+    prod.listarProdutosMaisVendidos(req,res);
+})
+
+app.get("/api/v1/produto/listarporcategoria/:categoria",(req,res)=>{
+    prod.ListarPorCategoria(req,res);
+})
+
+app.get("/api/v1/produto/listarporid/:id",(req,res)=>{
+    prod.ListarPorId(req,res);
+})
+
 // ########################################### Venda #########################################
 
 app.get("/api/v1/venda/listar",(req,res)=>{
@@ -94,6 +108,10 @@ app.post("/api/v1/pagamento/cadastro",(req,res)=>{
     pag.cadastroPagamento(req,res);
 })
 
+// ########################################### Usuários #########################################
+app.post("/api/v1/usuario/cadastrar",(req,res)=>{
+    us.cadastrarUsuario(req,res)
+})
 
 
 
