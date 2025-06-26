@@ -113,6 +113,11 @@ app.post("/api/v1/usuario/cadastrar",(req,res)=>{
     us.cadastrarUsuario(req,res)
 })
 
+app.post("/api/v1/usuario/login",(req,res)=>{
+    us.loginUsuario(req,res)
+})
+
+
 
 
 

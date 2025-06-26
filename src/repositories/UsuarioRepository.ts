@@ -1,31 +1,32 @@
-import { resolve } from "path";
 import Usuario from "../classes/Usuario";
-import CommandsUsuario from "../Interfaces/CommandsUsuario";
-import bcrypt from "bcrypt"
-import { rejects } from "assert";
 import { conexao } from "../database/Config";
-import { error } from "console";
+import CommandsUsuario from "../Interfaces/CommandsUsuario";
+import bcrypt from "bcrypt";
 
 export default class UsuarioRepository implements CommandsUsuario<Usuario>{
-    login(usuario: string, senha: string) {
-        conexao.query("SELECT us.id,us.nomeusuario,us.senha,us.fotousuario,cli.id_cliente WHERE us.nomeusuario=?",
+   
+    login(usuario: string, senha: string):Promise<any>{
+        return new Promise((resolve, reject)=>{
+            conexao.query(`SELECT * from usuario WHERE nomeusuario=?`,
             [
                 usuario
             ],
-            (erro,result:any)=>{
-                if(erro){
-                    return erro
-                } else{
-                    return result
-                }
+        (erro,result:any)=>{
+            if(erro){
+                return reject(erro);
             }
+            else{
+                return resolve(result);                
+            }
+        }
         )
+    })
     }
     loginUCE(usuario: string, cpf: string, email: string, senha: string) {
         throw new Error("Method not implemented.");
     }
     Cadastrar(obj: Usuario): Promise<Usuario> {
-        return new Promise ((resolve,reject)=>{
+        return new Promise((resolve,reject)=>{
             conexao.query(`INSERT INTO usuario(nomeusuario, senha, fotousuario)VALUES(?,?,?)`,
                 [
                     obj.nomeusuario,
@@ -34,13 +35,14 @@ export default class UsuarioRepository implements CommandsUsuario<Usuario>{
                 ],
                 (erro,result:any)=>{
                     if(erro){
-                        return reject(erro)
-                    } else{
-                        return resolve(result)
+                        return reject(erro);
+                    }
+                    else{
+                        return resolve(result);
                     }
                 }
-            )
 
+            )
         })
     }
     Listar(): Promise<Usuario[]> {
@@ -55,5 +57,5 @@ export default class UsuarioRepository implements CommandsUsuario<Usuario>{
     PesquisarId(id: number): Promise<Usuario> {
         throw new Error("Method not implemented.");
     }
-    
+
 }
